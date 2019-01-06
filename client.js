@@ -122,9 +122,9 @@ app.get('/createAccount', function(req, res) {
 		'Content-Type': 'application/json',
 		'Authorization': 'Bearer ' + access_token 
 	};
-	var jsonBody = {"Name": "Danny Test account from Node.js"};
+	var jsonBody = JSON.parse({"Name": "Danny Test account from Node.js"});
 	var postIT = request('POST', instanceURL + '/services/data/v43.0/sobjects/Account/', {
-		json: jsonBody,
+		body: jsonBody,
 		headers: accountheader
 	});
 	if (postIT.statusCode >= 200 && postIT.statusCode < 300) {
