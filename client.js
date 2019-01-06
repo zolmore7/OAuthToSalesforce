@@ -122,7 +122,7 @@ app.get('/createAccount', function(req, res) {
 		'Content-Type': 'application/json',
 		'Authorization': 'Bearer ' + access_token 
 	};
-	var jsonBody = JSON.parse({Name: "Danny Test account from Node.js"});
+	var jsonBody = JSON.parse('{"Name": "Danny Test account from Node.js"}');
 	var postIT = request('POST', instanceURL + '/services/data/v43.0/sobjects/Account/', {
 		body: jsonBody,
 		headers: accountheader
