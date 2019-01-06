@@ -117,7 +117,19 @@ app.get('/callback', function(req, res){
 });
 
 app.get('/createAccount', function(req, res) {
-
+	var accountheader = {
+		'Content-Type': 'application/json',
+		'Authorization': 'Bearer ' + access_token 
+	};
+	var jsonBody = {Name: 'Danny Test account from Node.js'};
+	var postIT = request('POST', instanceURL + '/services/data/v43.0/sobjects/Account/', {
+		body: jsonBody,
+		headers: accountheader
+	});
+	if (postIT.statusCode >= 200 && postIT.statusCode < 300) {
+		var body = JSON.parse(tokRes.getBody());
+		console.log(body.id);
+	};
 });
 
 var refreshAccessToken = function(req, res) {
