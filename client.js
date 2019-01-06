@@ -109,7 +109,8 @@ app.get('/callback', function(req, res){
 		scope = body.scope;
 		console.log('Got scope: %s', scope);
 		var instanceURL = body.instance_url;
-		res.render('index', {access_token: access_token, scope: scope, refresh_token: refresh_token, instanceURL: instanceURL});
+		console.log(instanceURL);
+		res.render('index', {access_token: access_token, scope: scope, refresh_token: refresh_token});
 	} else {
 		res.render('error', {error: 'Unable to fetch access token, server response: ' + tokRes.statusCode})
 	} 
