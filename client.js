@@ -35,6 +35,7 @@ var state = null;
 var access_token = null;
 var scope = null;
 var refresh_token = null;
+var instanceURL = null;
 
 app.get('/', function (req, res) {
 	res.render('index', {access_token: access_token, scope: scope, refresh_token: refresh_token});
@@ -108,7 +109,7 @@ app.get('/callback', function(req, res){
 		
 		scope = body.scope;
 		console.log('Got scope: %s', scope);
-		var instanceURL = body.instance_url;
+		instanceURL = body.instance_url;
 		console.log(instanceURL);
 		res.render('index', {access_token: access_token, scope: scope, refresh_token: refresh_token});
 	} else {
