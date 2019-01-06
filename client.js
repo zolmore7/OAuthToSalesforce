@@ -131,9 +131,9 @@ app.get('/createAccount', function(req, res) {
 		var body = JSON.parse(tokRes.getBody());
 		console.log(body.id);
 	} else {
-		res.render('error', {error: 'Unable to create account, server response: ' + postIT.statusCode})
+		//res.render('error', {error: 'Unable to create account, server response: ' + postIT.statusCode})
 	};
-	res.render('index', {access_token: access_token, scope: scope, refresh_token: refresh_token});
+	//res.render('index', {access_token: access_token, scope: scope, refresh_token: refresh_token});
 });
 
 var refreshAccessToken = function(req, res) {
