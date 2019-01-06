@@ -205,11 +205,10 @@ var encodeClientCredentials = function(clientId, clientSecret) {
 };
 
 app.use('/', express.static('files/client'));
-var port = process.env.PORT || 9000;
 
-var server = app.listen(port, 'localhost', function () {
+var server = app.listen(process.env.PORT || 9000, 'localhost', function () {
   var host = server.address().address;
-  //var port = server.address().port;
+  var port = server.address().port;
   console.log('OAuth Client is listening at http://%s:%s', host, port);
 });
  
