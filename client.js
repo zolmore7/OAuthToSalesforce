@@ -62,7 +62,7 @@ app.get('/callback', function(req, res){
 	
 	console.log('In Callback');
 	
-	/*if (req.query.error) {
+	if (req.query.error) {
 		// it's an error response, act accordingly
 		res.render('error', {error: req.query.error});
 		return;
@@ -112,7 +112,7 @@ app.get('/callback', function(req, res){
 		res.render('index', {access_token: access_token, scope: scope, refresh_token: refresh_token});
 	} else {
 		res.render('error', {error: 'Unable to fetch access token, server response: ' + tokRes.statusCode})
-	} */
+	} 
 });
 
 var refreshAccessToken = function(req, res) {
