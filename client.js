@@ -130,11 +130,11 @@ app.get('/createAccount', function(req, res) {
 	if (postIT.statusCode >= 200 && postIT.statusCode < 300) {
 		var body = JSON.parse(postIT.getBody());
 		console.log(body.id);
-	} else {
+		res.render('index', {access_token: access_token, scope: scope, refresh_token: refresh_token});
+} else {
 		console.log('Unable to create account, server response: ' + postIT.statusCode);
-		//res.render('error', {error: 'Unable to create account, server response: ' + postIT.statusCode})
+		res.render('error', {error: 'Unable to create account, server response: ' + postIT.statusCode})
 	};
-	//res.render('index', {access_token: access_token, scope: scope, refresh_token: refresh_token});
 });
 
 var refreshAccessToken = function(req, res) {
