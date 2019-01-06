@@ -122,7 +122,7 @@ app.get('/createAccount', function(req, res) {
 		'Content-Type': 'application/json',
 		'Authorization': 'Bearer ' + access_token 
 	};
-	var jsonBody = {Name: 'Danny Test account from Node.js'};
+	var jsonBody = {"Name": "Danny Test account from Node.js"};
 	var postIT = request('POST', instanceURL + '/services/data/v43.0/sobjects/Account/', {
 		json: jsonBody,
 		headers: accountheader
@@ -131,6 +131,7 @@ app.get('/createAccount', function(req, res) {
 		var body = JSON.parse(tokRes.getBody());
 		console.log(body.id);
 	};
+	res.render('index', {access_token: access_token, scope: scope, refresh_token: refresh_token});
 });
 
 var refreshAccessToken = function(req, res) {
