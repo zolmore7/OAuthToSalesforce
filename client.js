@@ -26,7 +26,7 @@ var authServer = {
 var client = {
 	"client_id": "3MVG9zlTNB8o8BA14VHFBTKqVeUzLwEpWqRc..CSJ_imd.Ef.Tyxr6dkyLN.jO5OAyiRy2sJHbPZwxwlLOb6B",
 	"client_secret": "1771474221795058741",
-	"redirect_uris": ["https://73.123.107.168:9000/Callback"]
+	"redirect_uris": ["https://oauthtosalesforce.herokuapp.com/Callback"]
 	//"scope": "foo"
 };
 
