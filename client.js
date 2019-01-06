@@ -62,7 +62,7 @@ app.get('/callback', function(req, res){
 	
 	console.log('In Callback');
 	
-	if (req.query.error) {
+	/*if (req.query.error) {
 		// it's an error response, act accordingly
 		res.render('error', {error: req.query.error});
 		return;
@@ -112,38 +112,7 @@ app.get('/callback', function(req, res){
 		res.render('index', {access_token: access_token, scope: scope, refresh_token: refresh_token});
 	} else {
 		res.render('error', {error: 'Unable to fetch access token, server response: ' + tokRes.statusCode})
-	}
-});
-
-app.get('/fetch_resource', function(req, res) {
-
-	/*console.log('Making request with access token %s', access_token);
-	
-	var headers = {
-		'Authorization': 'Bearer ' + access_token,
-		'Content-Type': 'application/x-www-form-urlencoded'
-	};
-	
-	var resource = request('POST', protectedResource,
-		{headers: headers}
-	);
-	
-	if (resource.statusCode >= 200 && resource.statusCode < 300) {
-		var body = JSON.parse(resource.getBody());
-		res.render('data', {resource: body});
-		return;
-	} else {
-		access_token = null;
-		if (refresh_token) {
-			refreshAccessToken(req, res);
-			return;
-		} else {
-			res.render('error', {error: resource.statusCode});
-			return;
-		}
-	}
-	*/
-	
+	} */
 });
 
 var refreshAccessToken = function(req, res) {
