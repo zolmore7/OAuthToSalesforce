@@ -128,7 +128,7 @@ app.get('/createAccount', function(req, res) {
 		headers: accountheader
 	});
 	if (postIT.statusCode >= 200 && postIT.statusCode < 300) {
-		var body = JSON.parse(tokRes.getBody());
+		var body = JSON.parse(postIT.getBody());
 		console.log(body.id);
 	} else {
 		console.log('Unable to create account, server response: ' + postIT.statusCode);
