@@ -27,7 +27,6 @@ var client = {
 	"client_id": "3MVG9zlTNB8o8BA14VHFBTKqVeUzLwEpWqRc..CSJ_imd.Ef.Tyxr6dkyLN.jO5OAyiRy2sJHbPZwxwlLOb6B",
 	"client_secret": "1771474221795058741",
 	"redirect_uris": ["https://oauthtosalesforce.herokuapp.com/Callback"]
-	//"scope": "foo"
 };
 
 var state = null;
@@ -49,7 +48,6 @@ app.get('/authorize', function(req, res){
 	
 	var authorizeUrl = buildUrl(authServer.authorizationEndpoint, {
 		response_type: 'code',
-		//scope: client.scope,
 		client_id: client.client_id,
 		redirect_uri: client.redirect_uris[0],
 		state: state
@@ -187,7 +185,7 @@ var buildUrl = function(base, options, hash) {
 	if (hash) {
 		newUrl.hash = hash;
 	}
-	
+	console.log(url.format(newUrl));
 	return url.format(newUrl);
 };
 
