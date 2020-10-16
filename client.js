@@ -7,6 +7,8 @@ var cons = require('consolidate');
 var randomstring = require("randomstring");
 var __ = require('underscore');
 __.string = require('underscore.string');
+var faye = require('faye');
+const e = require("express");
 
 
 var app = express();
@@ -24,17 +26,21 @@ var authServer = {
 // client information
 
 var client = {
-	"client_id": "3MVG9zlTNB8o8BA14VHFBTKqVeUzLwEpWqRc..CSJ_imd.Ef.Tyxr6dkyLN.jO5OAyiRy2sJHbPZwxwlLOb6B",
-	"client_secret": "1771474221795058741",
-	"redirect_uris": ["https://oauthtosalesforce.herokuapp.com/Callback"]
+	//"client_id": "3MVG9zlTNB8o8BA14VHFBTKqVeUzLwEpWqRc..CSJ_imd.Ef.Tyxr6dkyLN.jO5OAyiRy2sJHbPZwxwlLOb6B",
+	//"client_secret": "1771474221795058741",
+	//"redirect_uris": ["https://oauthtosalesforce.herokuapp.com/Callback"]
+	"client_id": "3MVG9zlTNB8o8BA14VHFBTKqVecwDEuy_.Zs2UiL1PSaHM3JOJNoTTIwN3e3huImaCY150QiPKw1BDjPGM5hr",
+	"client_secret": "B9C16EAD70D9516180A30789CC43A8152AF6A9176F04759235DB8231D7D75799",
+	"redirect_uris": ["http://localhost:9000/Callback"]
 };
 
-var state = null;
+var state = 'abc';
 
 var access_token = null;
 var scope = null;
 var refresh_token = null;
 var instanceURL = null;
+var theMessage = 'None';
 
 app.get('/', function (req, res) {
 	res.render('index', {access_token: access_token, scope: scope, refresh_token: refresh_token});
@@ -44,10 +50,11 @@ app.get('/authorize', function(req, res){
 
 	access_token = null;
 	scope = null;
-	state = randomstring.generate();
+	//state = randomstring.generate()
 	
 	var authorizeUrl = buildUrl(authServer.authorizationEndpoint, {
 		response_type: 'code',
+		//response_type: 'token',
 		client_id: client.client_id,
 		redirect_uri: client.redirect_uris[0],
 		state: state
@@ -55,9 +62,10 @@ app.get('/authorize', function(req, res){
 	
 	console.log("redirect", authorizeUrl);
 	res.redirect(authorizeUrl);
+	return;
 });
 
-app.get('/callback', function(req, res){
+app.get('/Callback', function(req, res){
 	
 	console.log('In Callback');
 	
@@ -67,14 +75,16 @@ app.get('/callback', function(req, res){
 		return;
 	}
 	
-	var resState = req.query.state;
-	if (resState != state) {
-		console.log('State DOES NOT MATCH: expected %s got %s', state, resState);
-		res.render('error', {error: 'State value did not match'});
-		return;
-	}
+	//var resState = req.query.state;
+	//if (resState != state) {
+	//	console.log('State DOES NOT MATCH: expected %s got %s', state, resState);
+	//	res.render('error', {error: 'State value did not match'});
+	//	return;
+	//}
 
 	var code = req.query.code;
+	console.log('a token=' + code);
+	console.log(req.params);
 
 	var form_data = qs.stringify({
 				grant_type: 'authorization_code',
@@ -109,18 +119,62 @@ app.get('/callback', function(req, res){
 		console.log('Got scope: %s', scope);
 		instanceURL = body.instance_url;
 		console.log(instanceURL);
-		res.render('index', {access_token: access_token, scope: scope, refresh_token: refresh_token});
+		//res.render('index', {access_token: access_token, scope: scope, refresh_token: refresh_token});
 	} else {
 		res.render('error', {error: 'Unable to fetch access token, server response: ' + tokRes.statusCode})
-	} 
+	}
+	res.render('index', {access_token: code, scope: scope, refresh_token: refresh_token});
+	return;
 });
+
+app.get('/subscribe', function(req, res) {
+	console.log('In subscribe');
+	var client       = new faye.Client(instanceURL + '/cometd/48.0/');
+	client.setHeader('Authorization', 'OAuth ' + access_token);
+	try {
+		client.subscribe('/event/Test_From_Node__e', function(message) {
+			console.log('Event occured');
+			console.log(message);
+			//res.render('index', {access_token: '', scope: '', refresh_token: '', show_Message: 'We subscribed'});
+			return;
+		});
+	
+	} catch (e) {
+		console.log('Broken: ' + e.message());
+	}
+	res.render('index', {access_token: '', scope: '', refresh_token: ''});
+	return;
+});
+
+app.get('/subscribeCDC', function(req, res) {
+	console.log('In subscribe change data capture');
+	var client       = new faye.Client(instanceURL + '/cometd/48.0/');
+	client.setHeader('Authorization', 'OAuth ' + access_token);
+	try {
+		client.subscribe('/data/ChangeEvents', function(message) {
+			console.log('Event occured');
+			console.log(message);
+			console.log(message.payload.ChangeEventHeader.commitUser);
+			var changedFields = message.payload.ChangeEventHeader.changedFields;
+			console.log(changedFields);
+			//res.render('index', {access_token: '', scope: '', refresh_token: '', show_Message: 'We subscribed'});
+			return;
+		});
+	
+	} catch (e) {
+		console.log('Broken: ' + e.message());
+	}
+	res.render('index', {access_token: '', scope: '', refresh_token: ''});
+	return;
+});
+
 
 app.get('/createAccount', function(req, res) {
 	var accountheader = {
 		'Content-Type': 'application/json',
 		'Authorization': 'Bearer ' + access_token 
 	};
-	var jsonBody = '{"Name": "Danny Test account from Node.js"}';
+	var jsonBody = '{"Name": "Danny Test account from Node for Craig.js"}';
 	var postIT = request('POST', instanceURL + '/services/data/v43.0/sobjects/Account/', {
 		body: jsonBody,
 		headers: accountheader
