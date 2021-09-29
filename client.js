@@ -29,9 +29,9 @@ var client = {
 	//"client_id": "3MVG9zlTNB8o8BA14VHFBTKqVeUzLwEpWqRc..CSJ_imd.Ef.Tyxr6dkyLN.jO5OAyiRy2sJHbPZwxwlLOb6B",
 	//"client_secret": "1771474221795058741",
 	//"redirect_uris": ["https://oauthtosalesforce.herokuapp.com/Callback"]
-	"client_id": "3MVG9zlTNB8o8BA14VHFBTKqVecwDEuy_.Zs2UiL1PSaHM3JOJNoTTIwN3e3huImaCY150QiPKw1BDjPGM5hr",
-	"client_secret": "B9C16EAD70D9516180A30789CC43A8152AF6A9176F04759235DB8231D7D75799",
-	"redirect_uris": ["http://localhost:9000/Callback"]
+	"client_id": "3MVG9FG3dvS828gKlwKH7NdDeoG7B4ING5YTOhIqwoVSjz_NZYmQb2sgtMvVXkBN6L3v7gIpVcimFcmDsdt5y",
+	"client_secret": "C392D822E9ADD8A589C398CACEF639CD13746428A46B0235BA811B77B3D053F3",
+	"redirect_uris": ["https://oauthtosalesforce.herokuapp.com/Callback"]
 };
 
 var state = 'abc';
